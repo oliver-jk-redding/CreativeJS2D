@@ -1,27 +1,96 @@
 <!DOCTYPE HTML>
-<html lang="en"> 
-<meta charset="utf-8"> 
+<html lang="en">
+<meta charset="utf-8">
 	<head>
 	<title> Particles!</title>
-	<style type="text/css"> 
-		body { 
-			background-color:black; 
-			margin:0px; 
-			overflow : hidden; 
+	<style type="text/css">
+		body {
+			background-color:black;
+			margin:0px;
+			overflow : hidden;
 		}
-		</style> 
+		</style>
 	</head>
-	
+
 	<body>
 		<script>
 
+		var canvas = document.createElement('canvas');
+		document.body.appendChild(canvas);
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+
+		var ctx = canvas.getContext('2d');
+
+		var particles = [];
+
+		// setInterval(draw, 1000/60);
+		draw();
+
+		function draw() {
+
+			ctx.clearRect(0,0,canvas.width, canvas.height);
+
+			var p = new Particle();
+			particles.push(p);
+
+			if(particles.length > 1000)
+				particles.shift();
+
+			for(var i=0; i<particles.length; i++) {
+				p = particles[i];
+
+				ctx.fillStyle = getRandomColor();
+				// ctx.fillRect(p.x, p.y, p.size, p.size);
+
+				// draw a circle of the required size
+				ctx.beginPath();
+				ctx.arc(p.x, p.y, p.size, 0, Math.PI*2, true);
+
+				// and fill it
+				ctx.fill();
+
+				// Velocity
+				p.x += p.xVel;
+				p.y += p.yVel;
+
+				// Drag
+				p.xVel *= 0.95;
+				p.yVel *= 0.95;
+
+				// Gravity
+				p.yVel += 0.5;
+				p.size *= 0.96;
+			}
+
+			window.requestAnimationFrame(draw);
+		}
+
+		function Particle() {
+			this.x = canvas.width/2;
+			this.y = canvas.height/2;
+			this.xVel = random(-5,5);
+			this.yVel = random(-5,5);
+			this.size = 10;
+		}
+
+		function random(min, max) {
+			return (Math.random()*(max-min)+min);
+		}
+
+		function getRandomColor() {
+	    var letters = '0123456789ABCDEF';
+	    var color = '#';
+	    for (var i = 0; i < 6; i++ ) {
+	        color += letters[Math.floor(Math.random() * 16)];
+	    }
+	    return color;
+		}
 
 
 
-
-		</script>			
+		</script>
 	</body>
-	
-	
+
+
 </html>
-	

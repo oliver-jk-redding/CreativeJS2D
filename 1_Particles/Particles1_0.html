@@ -15,8 +15,8 @@
 		</style>
 	</head>
 	<body>
-	
-	<script src="js/SimpleParticle.js"></script>		
+
+	<script src="js/SimpleParticle.js"></script>
 	<script>
 
 // screen size variables
@@ -38,10 +38,10 @@ function setup() {
 
 	// CANVAS SET UP
 
-	document.body.appendChild(canvas); 
-	canvas.width = screenWidth; 
+	document.body.appendChild(canvas);
+	canvas.width = screenWidth;
 	canvas.height = screenHeight;
-	
+
 	draw();
 
 }
@@ -53,49 +53,55 @@ function setup() {
 function draw() {
 
 	// create a new particle in the middle of the stage
-	var particle = new Particle(screenWidth/2, screenHeight/2); 
-	
+	var particle = new Particle(screenWidth/2, screenHeight/2);
+
 	// give it a random x and y velocity
-		
-	particle.velX = random(-2,2); 
+
+	particle.velX = random(-2,2);
 	particle.velY = random(-2,2);
-	
+
+	particle.size = 10;
+	particle.shrink = 0.96;
+	particle.gravity = 0.2;
+	particle.alpha = 0.5;
+	particle.fade = 0.01;
+
 	// add it to the array
-	particles.push(particle); 
- 
-	
+	particles.push(particle);
+
+
 	// clear the canvas
 	context.clearRect(0,0, screenWidth, screenHeight);
-  	
+
   	// iteratate through each particle
 	for (i=0; i<particles.length; i++) {
-		var particle = particles[i]; 
-		
+		var particle = particles[i];
+
 		// render it
-		particle.render(context); 
-		
+		particle.render(context);
+
 		// and then update. We always render first so particle
 		// appears in the starting point.
 		particle.update();
-		
+
 
 	}
-	
-	// Keep taking the oldest particles away until we have 
-	// fewer than the maximum allowed. 
-	 
+
+	// Keep taking the oldest particles away until we have
+	// fewer than the maximum allowed.
+
 	while(particles.length>maxParticles)
-		particles.shift(); 
-	
+		particles.shift();
+
 	window.requestAnimationFrame(draw);
 }
 
 
 function random(min, max) {
-	return ((Math.random()*(max-min)) + min); 
+	return ((Math.random()*(max-min)) + min);
 }
 
-			
+
 		</script>
 	</body>
 </html>
