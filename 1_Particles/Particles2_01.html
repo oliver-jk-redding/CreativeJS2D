@@ -14,7 +14,7 @@
 
 		</style>
 	</head>
-	<body >
+	<body>
 
 
 		<script src="js/ImageParticle.js"></script>
@@ -34,11 +34,9 @@ var	screenWidth = window.innerWidth,
 	mouseY = screenHeight/2,
 	mouseDown = false,
 
-	particles = [],
-	maxParticles = 250,
-	particleImage = new Image(),
-	counter = 0;
-
+particles = [],
+maxParticles = 450,
+particleImage = new Image();
 particleImage.src = 'img/ParticleBlue.png';
 
 function setup() {
@@ -49,9 +47,10 @@ function setup() {
 	canvas.width = screenWidth;
 	canvas.height = screenHeight;
 
+
 	initMouseListeners();
 
-	draw();
+	// draw();
 
 }
 
@@ -62,8 +61,10 @@ function setup() {
 function draw() {
 
 	// make some particles
+	// if(mouseDown)
 
-	if(counter%4==0) makeParticle(1);
+	// else
+		// makeParticle(1);
 
 	// clear the canvas
 	context.clearRect(0,0, screenWidth, screenHeight);
@@ -79,6 +80,14 @@ function draw() {
 		// appears in the starting point.
 		particle.update();
 
+		//Very simple collision detection with the floor
+
+		if(particle.posY>screenHeight-100) {
+			particle.velY*=-0.9;
+			particle.posY = screenHeight-100;
+		}
+
+
 	}
 
 	// Keep taking the oldest particles away until we have
@@ -86,9 +95,6 @@ function draw() {
 
 	while(particles.length>maxParticles)
 		particles.shift();
-
-
-	counter++;
 
 	window.requestAnimationFrame(draw);
 }
@@ -98,19 +104,18 @@ function makeParticle(particleCount) {
 	for(var i=0; i<particleCount;i++) {
 
 		// create a new particle in the middle of the stage
-		var particle = new ImageParticle(particleImage, screenWidth/2, screenHeight/2);
-		//var particle = new ImageParticle(particleImage, mouseX, mouseY);
+		// var particle = new ImageParticle(particleImage, screenWidth/2, screenHeight/2);
+		var particle = new ImageParticle(particleImage, mouseX, mouseY);
 
 		// give it a random x and y velocity
-		var speed = random(0,2);
-		var angle = random(0,Math.PI*2);
-
-		particle.velX = Math.cos(angle)*speed;
-		particle.velY = Math.sin(angle)*speed;
-		particle.size = random(1,7);
-		particle.gravity = 0;
-		particle.drag = 0.995;
+		particle.velX = random(-1,1);
+		particle.velY = random(-1,1);
+		// particle.size = random(0.2,0.5);
+		particle.gravity = 0.5;
+		particle.drag = 0.98;
 		particle.shrink = 0.99;
+
+		// canvas.globalCompositeOperation = "lighter";
 
 		// sets the blend mode so particles are drawn with an additive blend
 		particle.compositeOperation = 'lighter';
@@ -126,6 +131,7 @@ function initMouseListeners() {
 	document.addEventListener('mousemove', onMouseMove, false);
 	document.addEventListener( 'mousedown', onMouseDown, false );
 	document.addEventListener( 'mouseup', onMouseUp, false );
+	document.addEventListener( 'click', onClick, false );
 }
 
 function onMouseMove( event ) {
@@ -138,6 +144,10 @@ function onMouseDown(event) {
 }
 function onMouseUp(event) {
 	mouseDown = false;
+}
+function onClick(event) {
+	makeParticle(1);
+	draw();
 }
 
 function random(min, max) {

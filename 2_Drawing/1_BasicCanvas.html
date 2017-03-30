@@ -3,16 +3,16 @@
 <head>
 <meta charset=utf-8>
 <title></title>
-<style type="text/css"> 
+<style type="text/css">
 	body {
 		background-color: #000000;
 		margin: 0px;
-		text-align:center; 
+		text-align:center;
 	}
 	canvas {
 		background-color:#111133;
 	}
-	
+
 </style>
 
 </head>
@@ -24,9 +24,16 @@
 var canvas = document.createElement( 'canvas' ),
 	context = canvas.getContext( '2d' );
 
-canvas.width = 800; 
-canvas.height = 600; 
+canvas.width = 800;
+canvas.height = 600;
 document.body.appendChild(canvas);
+
+context.lineWidth = 2;
+context.strokeStyle = 'red';
+context.strokeRect(1,1,100,100);
+context.beginPath();
+context.moveTo(0,0);
+
 
 
 

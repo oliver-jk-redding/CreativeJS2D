@@ -57,14 +57,19 @@ function draw() {
 
 	// give it a random x and y velocity
 
-	particle.velX = random(-2,2);
-	particle.velY = random(-2,2);
+	var angle = random(0,360);
+	var speed = random(0,5); //distance
+	var TO_RADIANS = Math.PI/180;
 
-	particle.size = 10;
-	particle.shrink = 0.96;
-	particle.gravity = 0.2;
-	particle.alpha = 0.5;
-	particle.fade = 0.01;
+	particle.velX = speed * Math.cos(angle*TO_RADIANS);
+	particle.velY = speed * Math.sin(angle*TO_RADIANS);
+
+	particle.size = 5;
+	// particle.shrink = 0.96;
+	// particle.gravity = 0.2;
+	// particle.alpha = 0.5;
+	// particle.fade = 0.01;
+	particle.drag = 0.98;
 
 	// add it to the array
 	particles.push(particle);

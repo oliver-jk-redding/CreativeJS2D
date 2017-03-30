@@ -3,31 +3,110 @@
 <head>
 <meta charset=utf-8>
 <title></title>
-<style type="text/css"> 
+<style type="text/css">
 	body {
 		background-color: #000000;
-		margin: 0px;	
+		margin: 0px;
 		text-align:center;
 	}
-
 </style>
 </head>
 <body>
-<script src="../libs/creative.js"></script>	
+<script src="../libs/creative.js"></script>
 <script>
 
 // canvas element and 2D context
 var canvas = document.createElement( 'canvas' ),
 	ctx = canvas.getContext( '2d' );
 
-canvas.width = 800; 
-canvas.height = 600; 
+canvas.width = 800;
+canvas.height = 600;
 document.body.appendChild(canvas);
 
 
+// ctx.translate(400,550);
+
+var gen = 0;
+var tree = new Branch(100, 0);
+
+// var bLength = 100;
+// var i = 20;
+// branch(100, 20, 0);
+
+function draw() {
+  ctx.clearRect(0,0,800,600);
+  ctx.save();
+  ctx.translate(400,550);
+
+  // Branch(100, 0);
+  tree.render();
+  ctx.restore();
+
+  // branchAngle+=0.2;
+  // bLength++;
+  // i *= 2;
+  // window.requestAnimationFrame(draw);
+}
+
+function Branch(branchLength, angle) {
+  gen++;
+
+  this.children = [];
+  this.branchGen = gen;
+  this.branchLength = branchLength;
+
+  var progress = 0;
+  var swaySpeed = random(0.01, 0.06);
+
+  if(branchLength>10) {
+    this.children.push(new Branch(branchLength*random(0.7,0.9),-20));
+    this.children.push(new Branch(branchLength*random(0.7,0.9),20));
+  }
+
+  // if(branchLength>10) {
+  //   branch(branchLength*random(0.7,0.9),-index);
+  //   branch(branchLength*random(0.7,0.9),index);
+  // }
+  // else {
+  //   ctx.fillStyle = hsla(340,60,50,0.2);
+  //   ctx.fillCircle(0,0,5);
+  // }
+
+  this.render = function() {
+    ctx.save();
+    // ctx.strokeStyle = hsl(gen*2,80,20);
+    // ctx.strokeStyle = hsl(gen*6,40,60);
+    ctx.strokeStyle = 'white';
+    ctx.rotate(radians(angle + Math.sin(progress)));
+    ctx.beginPath();
+    ctx.lineWidth = branchLength*0.1;
+    ctx.moveTo(0,0);
+    ctx.lineTo(0,-branchLength);
+    ctx.stroke();
+    ctx.translate(0, -branchLength);
+
+    for(var i = 0; i < this.children.length; i++) {
+      if(this.children[i].branchLength>10) {
+        this.children[i].render();
+      }
+      else {
+        // ctx.fillStyle = hsla(999,999,999,0.2);
+        // ctx.fillStyle = hsla(340,60,50,0.2);
+        ctx.fillStyle = hsla(340,60,50,0.5);
+        // ctx.fillStyle = 'white';
+        ctx.fillCircle(0,0,5);
+      }
+    }
+    ctx.restore();
+    progress+=swaySpeed;
+  }
 
 
- 
+  gen--;
+}
+
+
+
 </script>
 </body>
 </html>
